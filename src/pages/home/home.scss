@@ -1,0 +1,47 @@
+@import '../../base.scss';
+
+.home__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px $spaceMedium $spaceLarge $spaceMedium;
+
+  background-color: $orange;
+  color: $white;
+}
+
+input {
+  height: 40px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: $spaceMedium;
+  border: none;
+  padding: $spaceXSmall $spaceSmall;
+}
+
+.home__content {
+  padding: 0 $spaceMedium;
+  background-color: $greyLight;
+}
+
+.beer-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: $spaceMedium;
+  grid-row-gap: $spaceMedium;
+  padding: 50px 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+@media #{$bp-medium-down} {
+  .beer-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media #{$bp-small-only} {
+  .beer-list {
+    grid-template-columns: 1fr;
+  }
+}

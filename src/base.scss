@@ -1,0 +1,35 @@
+//colors
+$orange: #F59325;
+$white: #fff;
+$greyLight: #F8F8F8;
+$grey: #9F9E9C;
+$purple: #B33E9A;
+
+//spacing
+$spaceXSmall: 4px;
+$spaceSmall: 8px;
+$spaceMedium: 16px;
+$spaceLarge: 24px;
+
+// breakpoints
+$small-bp: 0;
+$medium-bp: 40em;
+$large-bp: 64em;
+$xlarge-bp: 80em;
+$xxlarge-bp: 100em;
+
+// media queries
+$bp-small-only: 'screen and (max-width: #{40em - 0.01em})';
+$bp-medium-down: 'screen and (max-width: #{64em - 0.01em})';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $greyLight;
+}
+
+h1, h3 {
+  margin: $spaceSmall 0;
+}
