@@ -4,10 +4,11 @@ import {getBeers, addFavourite, removeFavourite} from '../../actions/beerActions
 import {connect} from 'react-redux';
 import { debounce } from 'throttle-debounce';
 import InfiniteScroll from 'react-infinite-scroller';
-import {Modal} from '../../components/modal/Modal';
+import { Modal } from '../../components/modal/Modal';
 import { BeerDetails } from '../../components/details/BeerDetails';
 import { BeerItem } from '../../components/beer-item/BeerItem';
 import {Loader} from '../../components/loader/Loader';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
 
@@ -51,7 +52,8 @@ class Home extends React.Component {
     const items = [];
     this.props.beers.map((item, idx) => {
       items.push(
-        <BeerItem item={item}
+        <BeerItem key={item.id}
+                  item={item}
                   itemSelected={() => this.itemSelected(item)}
                   isFavourite={this.isMarkedAsFavourite(item)}
                   handleFavouriteClick={() => this.handleFavouriteClick(item)}>
@@ -62,11 +64,12 @@ class Home extends React.Component {
      const loader = (<Loader></Loader>);   
 
     return (
-      <div>
+      <div className="home">
         <section className="home__title">
           <h1>The Beer Bank</h1>
           <span>Find your favourite beer here</span>
           <input type="text" placeholder="Search for beer name" onChange={this.handleSerach}></input>
+          <Link to='search'>Advanced Search</Link>
         </section>
         <section className="home__content">
           <InfiniteScroll
