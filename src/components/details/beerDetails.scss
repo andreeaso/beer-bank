@@ -55,6 +55,12 @@
   }
 }
 
+.similar {
+  h3 {
+    color: $orange;
+  }
+}
+
 @media #{$bp-small-only} { 
   .details {
     display: flex;

@@ -1,8 +1,6 @@
 import React from 'react';
-import {removeFavourite, addFavourite, searchBeers} from '../../actions/beerActions';
+import {removeFavourite, addFavourite, searchBeers, openDetailsModal} from '../../actions/beerActions';
 import {connect} from 'react-redux';
-import { Modal } from '../../components/modal/Modal';
-import { BeerDetails } from '../../components/details/BeerDetails';
 import { BeerItem } from '../../components/beer-item/BeerItem';
 import './advancedSearch.scss'
 import DatePicker from 'react-datepicker';
@@ -45,7 +43,7 @@ class AdvancedSearch extends React.Component {
   }
 
   itemSelected = item => {
-    this.setState({showModal: true, selectedBeer: item});
+    this.props.openDetailsModal(item);
   }
 
   handleSearch = (event) => {
@@ -119,9 +117,6 @@ class AdvancedSearch extends React.Component {
               </BeerItem>
             ))}
           </div>
-          <Modal show={this.state.showModal} handleClose={() => this.setState({showModal: false})}>
-            <BeerDetails beer={this.state.selectedBeer}></BeerDetails>
-          </Modal>
         </div>
       </div>
     ); 
@@ -136,7 +131,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   removeFavourite: (item) => dispatch(removeFavourite(item)),
   addFavourite: (item) => dispatch(addFavourite(item)),
-  search: (searchData) => dispatch(searchBeers(searchData))
+  search: (searchData) => dispatch(searchBeers(searchData)),
+  openDetailsModal: (beer) => dispatch(openDetailsModal(beer))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearch)

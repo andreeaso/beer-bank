@@ -7,6 +7,9 @@ export const addFavourite = (item) => ({type: types.ADD_FAVOURITE, item});
 export const removeFavourite = (item) => ({type: types.REMOVE_FAVOURITE, item});
 export const searchBeers = (searchData) => ({type: types.SEARCH_BEERS, searchData});
 export const searchBeersSuccess = (beers) => ({type: types.SEARCH_BEERS_SUCCESS, beers});
+export const openDetailsModal = (beer) => ({type: types.SHOW_DETAILS_MODAL, beer});
+export const closeDetailsModal = () => ({type: types.CLOSE_DETAILS_MODAL});
+export const foundSimilarBeers = (beers) => ({type: types.FOUND_SIMIAR_BEERS, beers});
 
 export const beerActionsHandler = handleActions({
   [types.BEERS_REQUEST_SUCCESS]: (state, action) => ({
@@ -30,5 +33,41 @@ export const beerActionsHandler = handleActions({
   [types.SEARCH_BEERS_SUCCESS]: (state, action) => ({
     ...state,
     advancedSearchResults: action.beers
+  }),
+  [types.SHOW_DETAILS_MODAL]: (state, action) => ({
+    ...state,
+    modal: {
+      isOpen: true,
+      beer: action.beer,
+      isFetchingSimilarBeers: true
+    }
+  }),
+  [types.CLOSE_DETAILS_MODAL]: (state) => ({
+    ...state,
+    modal: {
+      isOpen: false,
+      beer: {}
+    }
+  }),
+  [types.FOUND_SIMIAR_BEERS]: (state, action) => ({
+    ...state,
+    modal: {
+      ...state.modal,
+      similarBeers: action.beers,
+      isFetchingSimilarBeers: false
+    }
   })
-}, {beers: [], page: 0, hasMore: true, searchTerm: '', favourites: [], advancedSearchResults: []})
+}, {
+  beers: [],
+  page: 0,
+  hasMore: true,
+  searchTerm: '',
+  favourites: [],
+  advancedSearchResults: [],
+  modal: {
+    isOpen: false,
+    beer: {},
+    isFetchingSimilarBeers: false,
+    similarBeers: []
+  }
+})

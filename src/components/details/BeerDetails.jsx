@@ -1,10 +1,12 @@
 import React from 'react';
 import './beerDetails.scss'
+import SimilarBeers from '../similar-beers/SimilarBeers';
+import {Loader} from '../loader/Loader';
 
 export class BeerDetails extends React.Component {
 
   render() {
-    const {beer} = this.props;
+    const {beer, similarBeers, isFetchingSimilarBeers} = this.props;
     return (
       <div>
         <div className="details">
@@ -27,7 +29,11 @@ export class BeerDetails extends React.Component {
             </div>
           </div>
         </div>
-        <div className="similar"></div>
+        <div className="similar">
+        <h3>You might also like:</h3>
+        {isFetchingSimilarBeers && <Loader></Loader>}
+        <SimilarBeers beers={similarBeers}></SimilarBeers>
+        </div>
       </div>
     );
   }

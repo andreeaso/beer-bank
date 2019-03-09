@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Header} from './components/header/Header';
+import Modal from './components/modal/Modal';
 
 export class App extends Component {
   render() {
@@ -7,7 +8,8 @@ export class App extends Component {
       <div className='main'>
           <Header/>
           {this.props.children}
-        </div>
+          <Modal/>
+      </div>
     );
   }
 }

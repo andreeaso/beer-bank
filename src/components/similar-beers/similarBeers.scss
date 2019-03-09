@@ -1,0 +1,24 @@
+@import '../../base.scss';
+
+.similar-beers {
+  .beers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: $spaceMedium;
+
+    .item {
+      padding: $spaceSmall;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid $grey;
+      color: #7A7A7A;
+      cursor: pointer;
+    }
+  }
+
+  img {
+    max-height: 150px;
+    margin-bottom: $spaceMedium;
+  }
+}

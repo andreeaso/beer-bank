@@ -1,8 +1,6 @@
 import React from 'react';
-import {removeFavourite} from '../../actions/beerActions';
+import {removeFavourite, openDetailsModal} from '../../actions/beerActions';
 import {connect} from 'react-redux';
-import {Modal} from '../../components/modal/Modal';
-import { BeerDetails } from '../../components/details/BeerDetails';
 import { BeerItem } from '../../components/beer-item/BeerItem';
 
 class Favourites extends React.Component {
@@ -20,7 +18,7 @@ class Favourites extends React.Component {
   }
 
   itemSelected = item => {
-    this.setState({showModal: true, selectedBeer: item});
+    this.props.openDetailsModal(item);
   }
 
   render() {
@@ -36,9 +34,6 @@ class Favourites extends React.Component {
             </BeerItem>
           ))}
         </div>
-        <Modal show={this.state.showModal} handleClose={() => this.setState({showModal: false})}>
-          <BeerDetails beer={this.state.selectedBeer}></BeerDetails>
-        </Modal>
       </div>
     ); 
   }
@@ -49,7 +44,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  removeFavourite: (item) => dispatch(removeFavourite(item))
+  removeFavourite: (item) => dispatch(removeFavourite(item)),
+  openDetailsModal: (beer) => dispatch(openDetailsModal(beer))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Favourites)

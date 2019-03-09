@@ -1,11 +1,9 @@
 import React from 'react';
 import './home.scss';
-import {getBeers, addFavourite, removeFavourite} from '../../actions/beerActions';
+import {getBeers, addFavourite, removeFavourite, openDetailsModal} from '../../actions/beerActions';
 import {connect} from 'react-redux';
 import { debounce } from 'throttle-debounce';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Modal } from '../../components/modal/Modal';
-import { BeerDetails } from '../../components/details/BeerDetails';
 import { BeerItem } from '../../components/beer-item/BeerItem';
 import {Loader} from '../../components/loader/Loader';
 import { Link } from 'react-router-dom';
@@ -45,7 +43,7 @@ class Home extends React.Component {
   }
 
   itemSelected = item => {
-    this.setState({showModal: true, selectedBeer: item});
+    this.props.openDetailsModal(item);
   }
 
   render() {
@@ -61,7 +59,7 @@ class Home extends React.Component {
       );
     });
 
-     const loader = (<Loader></Loader>);   
+     const loader = (<Loader key='loader'></Loader>);   
 
     return (
       <div className="home">
@@ -82,9 +80,6 @@ class Home extends React.Component {
             </div>
           </InfiniteScroll>
         </section>
-        <Modal show={this.state.showModal} handleClose={() => this.setState({showModal: false})}>
-          <BeerDetails beer={this.state.selectedBeer}></BeerDetails>
-        </Modal>
       </div>
       
     ); 
@@ -100,7 +95,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getBeers: (name, page) => dispatch(getBeers({name, page})),
   addFavourite: (item) => dispatch(addFavourite(item)),
-  removeFavourite: (item) => dispatch(removeFavourite(item))
+  removeFavourite: (item) => dispatch(removeFavourite(item)),
+  openDetailsModal: (beer) => dispatch(openDetailsModal(beer))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

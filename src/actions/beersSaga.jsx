@@ -1,6 +1,6 @@
 import {takeLatest, all, put, call, select} from 'redux-saga/effects'
 import * as beerActionsTypes from './beerActionTypes'
-import {beersFound, searchBeersSuccess} from './beerActions'
+import {beersFound, searchBeersSuccess, foundSimilarBeers} from './beerActions'
 
 const apiRoot = 'https://api.punkapi.com/v2'
 
@@ -22,10 +22,9 @@ async function advancedSearch (searchData) {
   addSearchParam(params, 'ebc_gt', searchData.minEBC);
   addSearchParam(params, 'brewed_before', getDate(searchData.brewedBefore));
   addSearchParam(params, 'brewed_after', getDate(searchData.brewedAfter));
+  addSearchParam(params, 'per_page', searchData.maxItems)
 
   const query = params.length > 0 ? `?${params.join('&')}` : '';
-  console.log('searching query ', query);
-
   const response = await fetch(`${apiRoot}/beers${query}`);
   const result = await response.json();
   return result;
@@ -55,10 +54,32 @@ export function * searchBeers({searchData}) {
   }
 }
 
+export function * getSimilarBeers({beer}) {
+  try {
+    const ibu = Math.round(beer.ibu);
+    const abv = Math.round(beer.abv);
+    const ebc = Math.round(beer.ebc);
+    const searchData = {
+        maxIBU: ibu + 10,
+        minIBU: ibu - 10 >= 0 ? ibu - 10 : 0,
+        maxABV: abv + 2,
+        minABV: abv - 2 >= 0 ? abv - 2 : 0,
+        maxEBC: ebc + 4,
+        minEBC: ebc - 4 >=0 ? ebc - 4 : 0,
+        maxItems: 4
+    };
+    const similarBeers = yield call(advancedSearch, searchData);
+    yield put(foundSimilarBeers(similarBeers.filter(similarBeer => similarBeer.id !== beer.id)));
+  } catch(e) {
+    console.log(e);
+  }
+}
+
 export default function * beersSaga() {
   yield all([
     takeLatest(beerActionsTypes.GET_BEERS, getBeers),
-    takeLatest(beerActionsTypes.SEARCH_BEERS, searchBeers)
+    takeLatest(beerActionsTypes.SEARCH_BEERS, searchBeers),
+    takeLatest(beerActionsTypes.SHOW_DETAILS_MODAL, getSimilarBeers)
   ]);
 }
 
